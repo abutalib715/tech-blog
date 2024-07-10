@@ -10,6 +10,7 @@ public class User {
     private String password;
     private String gender;
     private String about;
+    private String profilePicture;
     private Timestamp reg_date;
 
     public User(int id, String username, String email, String password, String gender, String about, Timestamp reg_date) {
@@ -88,11 +89,13 @@ public class User {
     public void setReg_date(Timestamp reg_date) {
         this.reg_date = reg_date;
     }
-    
-    
-    
-    
-    
-    
-    
+
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 }
