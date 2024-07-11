@@ -59,6 +59,7 @@
                                 <h4>Please wait...</h4>
                             </div>
                             <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+                            <a href="login.jsp">Login</a>
                         </form>
                     </div>
 

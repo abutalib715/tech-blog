@@ -45,6 +45,7 @@ public class UserDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if(resultSet.next()){
+                System.out.println(resultSet.getString("username"));
                 user = new User();
                 user.setUsername(resultSet.getString("username"));
                 user.setEmail(resultSet.getString("email"));
