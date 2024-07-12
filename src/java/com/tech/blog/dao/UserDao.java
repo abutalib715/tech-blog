@@ -18,9 +18,9 @@ public class UserDao {
     public boolean saveUser(User user) {
         boolean isInserted = false;
         try {
-            String query = "insert into user(username, email, password, gender, about) values(?,?,?,?,?)";
+            String query = "insert into user(name, email, password, gender, about) values(?,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(query);
-            pstmt.setString(1, user.getUsername());
+            pstmt.setString(1, user.getName());
             pstmt.setString(2, user.getEmail());
             pstmt.setString(3, user.getPassword());
             pstmt.setString(4, user.getGender());
@@ -45,9 +45,9 @@ public class UserDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if(resultSet.next()){
-                System.out.println(resultSet.getString("username"));
                 user = new User();
-                user.setUsername(resultSet.getString("username"));
+                user.setId(resultSet.getInt("id"));
+                user.setName(resultSet.getString("name"));
                 user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
                 user.setAbout(resultSet.getString("about"));

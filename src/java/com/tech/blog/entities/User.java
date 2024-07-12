@@ -5,7 +5,7 @@ import java.sql.*;
 
 public class User {
     private int id;
-    private String username;
+    private String name;
     private String email;
     private String password;
     private String gender;
@@ -13,9 +13,9 @@ public class User {
     private String profilePicture;
     private Timestamp reg_date;
 
-    public User(int id, String username, String email, String password, String gender, String about, Timestamp reg_date) {
+    public User(int id, String name, String email, String password, String gender, String about, Timestamp reg_date) {
         this.id = id;
-        this.username = username;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.gender = gender;
@@ -26,8 +26,8 @@ public class User {
     public User() {
     }
 
-    public User(String username, String email, String password, String gender, String about) {
-        this.username = username;
+    public User(String name, String email, String password, String gender, String about) {
+        this.name = name;
         this.email = email;
         this.password = password;
         this.gender = gender;
@@ -42,12 +42,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Error Page</title>
+    <title>Profile Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
@@ -49,7 +49,7 @@
             </ul>
             <ul class="navbar-nav mr-right">
                 <li class="nav-item">
-                    <a href="#" class="nav-link"><span class="fa fa-user-circle"></span> <%= user.getUsername() %></a>
+                    <a href="#" class="nav-link"  data-bs-toggle="modal" data-bs-target="#profileModal"> <%= user.getName() %></a>
                 </li>
                 <li class="nav-item">
                     <a href="logout" class="nav-link"><span class="fa fa-sign-out"></span>Logout</a>
@@ -59,11 +59,57 @@
     </div>
 </nav>
 <div class="container text-center">
-    <%= user.getUsername() %> <br/>
+    <%= user.getName() %> <br/>
     <%= user.getEmail() %> <br/>
     <%= user.getGender() %> <br/>
     <%= user.getAbout() %> <br/>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Profile Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="profile-picture/<%= user.getProfilePicture() %>" alt="" class="img-fluid img-thumbnail" style="border-radius: 50%; max-width: 150px">
+                <h1 class="modal-title fs-5 mt-3"><%= user.getName() %></h1>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th scope="row">ID</th>
+                        <td><%= user.getId() %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td><%= user.getEmail() %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gender</th>
+                        <td><%= user.getGender() %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">About</th>
+                        <td><%= user.getAbout() %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Reg Date</th>
+                        <td><%= user.getReg_date().toString() %></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

@@ -33,13 +33,13 @@ public class RegisterServlet extends HttpServlet {
             if (acceptTerms == null) {
                 out.println("Please accept terms..!");
             } else {
-                String username = request.getParameter("username");
+                String name = request.getParameter("name");
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
                 String gender = request.getParameter("gender");
                 String about = request.getParameter("about");
 
-                User user = new User(username, email, password, gender, about);
+                User user = new User(name, email, password, gender, about);
 
                 UserDao dao = new UserDao(ConnectionProvider.getConnection());
                 if (dao.saveUser(user)) {

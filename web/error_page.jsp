@@ -11,7 +11,7 @@
     <div class="container text-center">
         <img src="img/error.png" width="256" alt="" class="img-fluid mt-3">
         <h3 class="display-3">Something went wrong, please try again!</h3>
-        <%= exception %>
+        <%= exception %> <br>
         <a href="index.jsp" class="btn btn-primary mt-3">Go to homepage</a>
     </div>
 </body>
