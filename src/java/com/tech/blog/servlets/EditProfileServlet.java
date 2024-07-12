@@ -1,14 +1,16 @@
 package com.tech.blog.servlets;
 
 import com.tech.blog.dao.UserDao;
+import com.tech.blog.entities.Message;
 import com.tech.blog.entities.User;
 import com.tech.blog.helper.ConnectionProvider;
+import com.tech.blog.helper.Helper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.*;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @MultipartConfig
 public class EditProfileServlet extends HttpServlet {
@@ -26,33 +28,43 @@ public class EditProfileServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            String about = request.getParameter("about");
-            Part profilePicture = request.getPart("profile_picture");
-            String imageName = profilePicture.getSubmittedFileName();
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String about = request.getParameter("about");
+        Part part = request.getPart("profile_picture");
+        String imageName = part.getSubmittedFileName();
 
-            // GET HTTP SESSION
+        // GET HTTP SESSION
 
-            HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("currentUser");
-            user.setName(name);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setAbout(about);
-            user.setProfilePicture(imageName);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("currentUser");
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setAbout(about);
+        user.setProfilePicture(imageName);
 
 
-            UserDao dao = new UserDao(ConnectionProvider.getConnection());
-            if (dao.updateUser(user)) {
-                out.println("done");
+        UserDao dao = new UserDao(ConnectionProvider.getConnection());
+        if (dao.updateUser(user)) {
+            String path = request.getServletContext().getRealPath("/") + "profile-picture" + File.separator + user.getProfilePicture();
+
+            Helper.deleteFile(path);
+
+            if (Helper.uploadFile(part.getInputStream(), path)) {
+                Message message = new Message("Profile Updated", "success", "alert-success");
+                session.setAttribute("msg", message);
             } else {
-                out.println("error");
+                Message message = new Message("Unable to upload file!", "success", "alert-success");
+                session.setAttribute("msg", message);
             }
+        } else {
+            Message message = new Message("Unable to update profile!", "success", "alert-success");
+            session.setAttribute("msg", message);
         }
 
+        response.sendRedirect("profile.jsp");
     }
 
 
