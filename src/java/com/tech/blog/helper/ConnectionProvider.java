@@ -9,7 +9,7 @@ public class ConnectionProvider {
             
             if(con == null){
                 // LOAD DATABASE DRIVER
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("com.mysql.cj.jdbc.Driver");
 
                 // CREATE CONNECTION
                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/tech_blog", "root", "");

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @MultipartConfig
-public class LoginServlet extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,26 +30,14 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-
-            UserDao userDao = new UserDao(ConnectionProvider.getConnection());
-            User user = userDao.getUserByEmailAndPassword(email, password);
-            if (user == null) {
-                Message message = new Message("Invalid Credentials!", "error", "alert-danger");
 
                 HttpSession session = request.getSession();
+                session.removeAttribute("currentUser");
+                Message message = new Message("Logout Successfully!", "success", "alert-success");
                 session.setAttribute("msg", message);
                 response.sendRedirect("login.jsp");
-            } else {
-                HttpSession session = request.getSession();
-                session.setAttribute("currentUser", user);
-                response.sendRedirect("profile.jsp");
-            }
-        }
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 

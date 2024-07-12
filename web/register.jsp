@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<%@include file="navbar.jsp" %>
 
 <main class="d-flex align-items-center" style="height: 100vh;">
 
