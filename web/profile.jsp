@@ -49,7 +49,9 @@
             </ul>
             <ul class="navbar-nav mr-right">
                 <li class="nav-item">
-                    <a href="#" class="nav-link"  data-bs-toggle="modal" data-bs-target="#profileModal"> <%= user.getName() %></a>
+                    <a href="#" class="nav-link" data-bs-toggle="modal"
+                       data-bs-target="#profileModal"><%= user.getName() %>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a href="logout" class="nav-link"><span class="fa fa-sign-out"></span>Logout</a>
@@ -74,36 +76,100 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
-                <img src="profile-picture/<%= user.getProfilePicture() %>" alt="" class="img-fluid img-thumbnail" style="border-radius: 50%; max-width: 150px">
-                <h1 class="modal-title fs-5 mt-3"><%= user.getName() %></h1>
-                <table class="table table-bordered">
-                    <tbody>
-                    <tr>
-                        <th scope="row">ID</th>
-                        <td><%= user.getId() %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Email</th>
-                        <td><%= user.getEmail() %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Gender</th>
-                        <td><%= user.getGender() %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About</th>
-                        <td><%= user.getAbout() %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Reg Date</th>
-                        <td><%= user.getReg_date().toString() %></td>
-                    </tr>
-                    </tbody>
-                </table>
+                <img src="profile-picture/<%= user.getProfilePicture() %>" alt="" class="img-fluid img-thumbnail"
+                     style="border-radius: 50%; max-width: 150px">
+                <h1 class="modal-title fs-5 mt-3"><%= user.getName() %>
+                </h1>
+                <div id="profile-details">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th scope="row">ID</th>
+                            <td><%= user.getId() %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Email</th>
+                            <td><%= user.getEmail() %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Gender</th>
+                            <td><%= user.getGender() %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">About</th>
+                            <td><%= user.getAbout() %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Reg Date</th>
+                            <td><%= user.getReg_date().toString() %>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="profile-edit" style="display: none">
+
+                    <form action="edit-profile" method="post" enctype="multipart/form-data">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <th scope="row">ID</th>
+                                <td><%= user.getId() %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Name</th>
+                                <td>
+                                    <input type="text" name="name" value="<%= user.getName() %>" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email</th>
+                                <td>
+                                    <input type="email" name="email" value="<%= user.getEmail() %>"
+                                           class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Password</th>
+                                <td>
+                                    <input type="password" name="password" value="<%= user.getPassword() %>"
+                                           class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Gender</th>
+                                <td>
+                                    <%= user.getGender().toUpperCase() %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">About</th>
+                                <td>
+                                    <textarea name="about" rows="5" class="form-control"><%= user.getAbout() %></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Profile Picture</th>
+                                <td>
+                                    <input type="file" name="profile_picture" class="form-control">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="container">
+                            <button type="submit" class="btn btn-outline-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Edit</button>
+                <button id="edit-profile-btn" type="button" class="btn btn-primary">Edit</button>
             </div>
         </div>
     </div>
@@ -115,5 +181,24 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function (e) {
+        let editStatus = false;
+        $("#edit-profile-btn").click(function () {
+            if (editStatus == false) {
+                $("#profile-details").hide()
+                $("#profile-edit").show()
+                editStatus = true;
+                $(this).text("Back")
+            } else {
+                $("#profile-details").show()
+                $("#profile-edit").hide()
+                editStatus = false;
+                $(this).text("Edit")
+            }
+        })
+    })
+</script>
 </body>
 </html>
