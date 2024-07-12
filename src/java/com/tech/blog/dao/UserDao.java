@@ -37,14 +37,14 @@ public class UserDao {
 
     public User getUserByEmailAndPassword(String email, String password) {
         User user = null;
-        try{
+        try {
             String query = "select * from user where email =? and password = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 user = new User();
                 user.setId(resultSet.getInt("id"));
                 user.setName(resultSet.getString("name"));
@@ -55,11 +55,32 @@ public class UserDao {
                 user.setReg_date(resultSet.getTimestamp("reg_date"));
                 user.setProfilePicture(resultSet.getString("profile_picture"));
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return user;
+    }
+
+    // UPDATE USER
+    public boolean updateUser(User user) {
+        boolean isUpdated = false;
+        try {
+            String query = "update user set name=?, email=?, password=?, about=?,profile_picture=? where id=?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, user.getName());
+            pstmt.setString(2, user.getEmail());
+            pstmt.setString(3, user.getPassword());
+            pstmt.setString(4, user.getAbout());
+            pstmt.setString(5, user.getProfilePicture());
+            pstmt.setInt(6, user.getId());
+
+            pstmt.executeUpdate();
+            isUpdated = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isUpdated;
     }
 }

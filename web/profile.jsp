@@ -60,12 +60,6 @@
         </div>
     </div>
 </nav>
-<div class="container text-center">
-    <%= user.getName() %> <br/>
-    <%= user.getEmail() %> <br/>
-    <%= user.getGender() %> <br/>
-    <%= user.getAbout() %> <br/>
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -150,7 +144,7 @@
                             <tr>
                                 <th scope="row">About</th>
                                 <td>
-                                    <textarea name="about" rows="5" class="form-control"><%= user.getAbout() %></textarea>
+                                    <textarea name="about" rows="3" class="form-control"><%= user.getAbout() %></textarea>
                                 </td>
                             </tr>
                             <tr>
