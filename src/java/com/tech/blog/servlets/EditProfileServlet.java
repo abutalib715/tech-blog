@@ -43,14 +43,17 @@ public class EditProfileServlet extends HttpServlet {
         user.setEmail(email);
         user.setPassword(password);
         user.setAbout(about);
+        String oldImage = user.getProfilePicture();
         user.setProfilePicture(imageName);
 
 
         UserDao dao = new UserDao(ConnectionProvider.getConnection());
         if (dao.updateUser(user)) {
             String path = request.getServletContext().getRealPath("/") + "profile-picture" + File.separator + user.getProfilePicture();
+            String oldImagePath = request.getServletContext().getRealPath("/") + "profile-picture" + File.separator + oldImage;
 
-            Helper.deleteFile(path);
+            if (!oldImage.equals("default.jpg"))
+                Helper.deleteFile(oldImagePath);
 
             if (Helper.uploadFile(part.getInputStream(), path)) {
                 Message message = new Message("Profile Updated", "success", "alert-success");
