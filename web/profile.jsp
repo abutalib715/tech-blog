@@ -1,5 +1,10 @@
 <%@ page import="com.tech.blog.entities.User" %>
 <%@ page import="com.tech.blog.entities.Message" %>
+<%@ page import="com.tech.blog.dao.PostDao" %>
+<%@ page import="com.tech.blog.helper.ConnectionProvider" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="com.tech.blog.entities.Category" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page errorPage="error_page.jsp" %>
 
@@ -31,22 +36,23 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="#" data-bs-toggle="modal"
+                       data-bs-target="#addPostModal">Do Post</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
+                <%--                <li class="nav-item dropdown">--%>
+                <%--                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"--%>
+                <%--                       aria-expanded="false">--%>
+                <%--                        Dropdown--%>
+                <%--                    </a>--%>
+                <%--                    <ul class="dropdown-menu">--%>
+                <%--                        <li><a class="dropdown-item" href="#">Action</a></li>--%>
+                <%--                        <li><a class="dropdown-item" href="#">Another action</a></li>--%>
+                <%--                        <li>--%>
+                <%--                            <hr class="dropdown-divider">--%>
+                <%--                        </li>--%>
+                <%--                        <li><a class="dropdown-item" href="#">Something else here</a></li>--%>
+                <%--                    </ul>--%>
+                <%--                </li>--%>
             </ul>
             <ul class="navbar-nav mr-right">
                 <li class="nav-item">
@@ -75,7 +81,7 @@
     }
 %>
 
-<!-- Modal -->
+<!-- Profile Edit Modal -->
 <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -179,6 +185,61 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button id="edit-profile-btn" type="button" class="btn btn-primary">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add Post Modal -->
+<div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addPostModalLabel">Add New Post</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="add-post" method="post" enctype="multipart/form-data" class="form">
+                    <div class="form-group mb-2">
+                        <select name="categoryId" id="categoryId" class="form-control">
+                            <option selected disabled>--- Select Category ---</option>
+                            <%
+                                PostDao postDao = new PostDao(ConnectionProvider.getConnection());
+                                ArrayList<Category> categoryList = postDao.getAllCategories();
+
+                                for (Category category : categoryList) {
+                            %>
+                            <option value="<%= category.getId() %>"><%= category.getName() %>
+                            </option>
+                            <%
+                                }
+                            %>
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <input type="text" name="title" placeholder="Enter Post Title" class="form-control">
+                    </div>
+                    <div class="form-group mb-2">
+                        <textarea name="content" id="content" rows="3" class="form-control"
+                                  placeholder="Enter post content here"></textarea>
+                    </div>
+                    <div class="form-group mb-2">
+                        <textarea name="content" id="code" rows="3" class="form-control"
+                                  placeholder="Enter your program code here(if any)"></textarea>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="image">Select Image File</label>
+                        <input type="file" id="image" name="image" class="form-control">
+                    </div>
+                    <div class="container">
+                        <button type="submit" class="btn btn-outline-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <%--                <button id="edit-profile-btn" type="button" class="btn btn-primary">Edit</button>--%>
             </div>
         </div>
     </div>
