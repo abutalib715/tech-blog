@@ -17,6 +17,10 @@
         <servlet-name>EditProfileServlet</servlet-name>
         <servlet-class>com.tech.blog.servlets.EditProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddPostServlet</servlet-name>
+        <servlet-class>com.tech.blog.servlets.AddPostServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
@@ -33,6 +37,10 @@
     <servlet-mapping>
         <servlet-name>EditProfileServlet</servlet-name>
         <url-pattern>/edit-profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPostServlet</servlet-name>
+        <url-pattern>/add-post</url-pattern>
     </servlet-mapping>
 
     <session-config>

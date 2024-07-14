@@ -200,7 +200,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="add-post" method="post" enctype="multipart/form-data" class="form">
+                <form action="add-post" method="post" id="addPostForm" enctype="multipart/form-data" class="form">
                     <div class="form-group mb-2">
                         <select name="categoryId" id="categoryId" class="form-control">
                             <option selected disabled>--- Select Category ---</option>
@@ -232,8 +232,8 @@
                         <label for="image">Select Image File</label>
                         <input type="file" id="image" name="image" class="form-control">
                     </div>
-                    <div class="container">
-                        <button type="submit" class="btn btn-outline-primary">Update</button>
+                    <div class="container text-center">
+                        <button type="submit" class="btn btn-outline-primary">Save</button>
                     </div>
                 </form>
             </div>
@@ -252,6 +252,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
+<%--EDIT PROFILE SCRIPT--%>
 <script>
     $(document).ready(function (e) {
         let editStatus = false;
@@ -267,6 +268,33 @@
                 editStatus = false;
                 $(this).text("Edit")
             }
+        })
+    })
+</script>
+
+<%--ADD POST SCRIPT--%>
+<script>
+    $(document).ready(function (e) {
+        $("#addPostForm").on("submit", function (event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+
+            console.log(formData);
+
+            $.ajax({
+                url: "add-post",
+                method: "post",
+                data: formData,
+                success: function (data, textStatus, jqXRH) {
+
+                },
+                error: function () {
+
+                },
+                processData: false,
+                contentType: false
+            })
         })
     })
 </script>

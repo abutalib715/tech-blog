@@ -11,6 +11,36 @@ public class Post {
     private String code;
     private String image;
     private Timestamp createdOn;
+    private int userId;
+
+    public Post(int id, int categoryId, String title, String content, String code, String image, Timestamp createdOn, int userId) {
+        this.id = id;
+        this.categoryId = categoryId;
+        this.title = title;
+        this.content = content;
+        this.code = code;
+        this.image = image;
+        this.createdOn = createdOn;
+        this.userId = userId;
+    }
+
+    public Post(int categoryId, String title, String content, String code, String image, Timestamp createdOn, int userId) {
+        this.categoryId = categoryId;
+        this.title = title;
+        this.content = content;
+        this.code = code;
+        this.image = image;
+        this.createdOn = createdOn;
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public Post(int id, int categoryId, String title, String content, String code, String image, Timestamp createdOn) {
         this.id = id;
