@@ -81,6 +81,31 @@
     }
 %>
 
+
+<%
+    PostDao postDao = new PostDao(ConnectionProvider.getConnection());
+    ArrayList<Category> categoryList = postDao.getAllCategories();
+%>
+<%--MAIN PAGE--%>
+
+<main>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                        All Posts
+                    </a>
+                    <% for (Category category : categoryList) { %>
+                    <a href="#" class="list-group-item list-group-item-action"><%= category.getName() %></a>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-md-8"></div>
+        </div>
+    </div>
+</main>
+
 <!-- Profile Edit Modal -->
 <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -204,17 +229,9 @@
                     <div class="form-group mb-2">
                         <select name="categoryId" id="categoryId" class="form-control">
                             <option selected disabled>--- Select Category ---</option>
-                            <%
-                                PostDao postDao = new PostDao(ConnectionProvider.getConnection());
-                                ArrayList<Category> categoryList = postDao.getAllCategories();
-
-                                for (Category category : categoryList) {
-                            %>
-                            <option value="<%= category.getId() %>"><%= category.getName() %>
-                            </option>
-                            <%
-                                }
-                            %>
+                            <% for (Category category : categoryList) { %>
+                            <option value="<%= category.getId() %>"><%= category.getName() %></option>
+                            <% } %>
                         </select>
                     </div>
                     <div class="form-group mb-2">
@@ -290,7 +307,7 @@
                 method: "post",
                 data: formData,
                 success: function (data, textStatus, jqXRH) {
-                    if(data.trim() == "done"){
+                    if (data.trim() == "done") {
                         swal("Success!", "Data saved successfully!!", "success")
                             .then((value) => {
                                 $('#addPostModal').modal('hide');
@@ -300,7 +317,7 @@
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    swal("Error!","Something went wrong. please try again!", "error")
+                    swal("Error!", "Something went wrong. please try again!", "error")
                 },
                 processData: false,
                 contentType: false
