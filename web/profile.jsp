@@ -20,6 +20,9 @@
     <title>Profile Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
@@ -37,7 +40,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" data-bs-toggle="modal"
-                       data-bs-target="#addPostModal">Do Post</a>
+                       data-bs-target="#addPostModal"><span class="fa fa-plus-circle"></span> Do Post</a>
                 </li>
                 <%--                <li class="nav-item dropdown">--%>
                 <%--                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"--%>
@@ -57,11 +60,12 @@
             <ul class="navbar-nav mr-right">
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-bs-toggle="modal"
-                       data-bs-target="#profileModal"><%= user.getName() %>
+                       data-bs-target="#profileModal">
+                        <span class="fa fa-user-circle"></span> <%= user.getName() %>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="logout" class="nav-link"><span class="fa fa-sign-out"></span>Logout</a>
+                    <a href="logout" class="nav-link"><span class="fa fa-sign-out"></span> Logout</a>
                 </li>
             </ul>
         </div>
@@ -97,11 +101,19 @@
                         All Posts
                     </a>
                     <% for (Category category : categoryList) { %>
-                    <a href="#" class="list-group-item list-group-item-action"><%= category.getName() %></a>
+                    <a href="#" class="list-group-item list-group-item-action"><%= category.getName() %>
+                    </a>
                     <% } %>
                 </div>
             </div>
-            <div class="col-md-8"></div>
+            <div class="col-md-8">
+                <div class="container text-center" id="loader">
+                    <span class="fa fa-refresh fa-3x fa-spin"></span>
+                    <h3 class="mt-3">Loading.....</h3>
+                </div>
+                <div class="container" id="post-container">
+                </div>
+            </div>
         </div>
     </div>
 </main>
@@ -230,7 +242,8 @@
                         <select name="categoryId" id="categoryId" class="form-control">
                             <option selected disabled>--- Select Category ---</option>
                             <% for (Category category : categoryList) { %>
-                            <option value="<%= category.getId() %>"><%= category.getName() %></option>
+                            <option value="<%= category.getId() %>"><%= category.getName() %>
+                            </option>
                             <% } %>
                         </select>
                     </div>
@@ -322,6 +335,19 @@
                 processData: false,
                 contentType: false
             })
+        })
+    })
+</script>
+
+<%--LOAD POSTS--%>
+<script>
+    $(document).ready(function (e) {
+        $.ajax({
+            url: "load_post.jsp",
+            success: function (data, textStatus, jqXRH) {
+                $("#loader").hide();
+                $("#post-container").html(data);
+            }
         })
     })
 </script>

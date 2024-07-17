@@ -3,10 +3,7 @@ package com.tech.blog.dao;
 import com.tech.blog.entities.Category;
 import com.tech.blog.entities.Post;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class PostDao {
@@ -37,6 +34,63 @@ public class PostDao {
         }
 
         return allCategories;
+    }
+
+    public ArrayList<Post> getAllPosts() {
+        ArrayList<Post> allPosts = new ArrayList<>();
+
+        try {
+            String sql = "select * from posts order by id desc";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                int postId = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String content = resultSet.getString("content");
+                String code = resultSet.getString("code");
+                String image = resultSet.getString("image");
+                Timestamp date = resultSet.getTimestamp("created_on");
+                int catId = resultSet.getInt("category_id");
+                int userId = resultSet.getInt("user_id");
+
+                Post post = new Post(postId, catId, title, content, code, image, date, userId);
+                allPosts.add(post);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allPosts;
+    }
+
+    public ArrayList<Post> getPostByCatId(int categoryId) {
+        ArrayList<Post> allPosts = new ArrayList<>();
+
+        try {
+            String sql = "select * from posts where category_id = ? order by id desc";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, categoryId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int postId = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String content = resultSet.getString("content");
+                String code = resultSet.getString("code");
+                String image = resultSet.getString("image");
+                Timestamp date = resultSet.getTimestamp("created_on");
+                int catId = resultSet.getInt("category_id");
+                int userId = resultSet.getInt("user_id");
+
+                Post post = new Post(postId, catId, title, content, code, image, date, userId);
+                allPosts.add(post);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allPosts;
     }
 
     // INSERT POST
