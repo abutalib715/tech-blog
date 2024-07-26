@@ -31,7 +31,6 @@ public class LikeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             int postId = Integer.parseInt(request.getParameter("postId"));
-            int userId = Integer.parseInt(request.getParameter("userId"));
             String operation = request.getParameter("operation");
 
             // GET SESSION

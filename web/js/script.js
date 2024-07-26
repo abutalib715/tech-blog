@@ -1,16 +1,19 @@
-function doLike(postId, userId){
+function doLike(postId, ref) {
 
     const data = {
         postId: postId,
-        userId: userId,
         operation: "like"
     }
 
     $.ajax({
         url: "like-post",
         data: data,
-        success: function (data, textStatus, jqXRH) {
-            console.log(data)
+        success: function (data, textStatus, jqXHR) {
+            if (data.trim() === 'true') {
+                let likeCounter = $(ref).find(".like-counter");
+                let currentCount = parseInt(likeCounter.html());
+                likeCounter.html(currentCount + 1);
+            }
         },
         error: function (jqXRH, textStatus, errorThrown) {
             console.log(jqXRH)

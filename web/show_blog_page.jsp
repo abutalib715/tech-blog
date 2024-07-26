@@ -6,6 +6,7 @@
 <%@ page import="com.tech.blog.entities.Category" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.tech.blog.dao.UserDao" %>
+<%@ page import="com.tech.blog.dao.LikeDao" %>
 <%@page errorPage="error_page.jsp" %>
 
 <%--
@@ -143,8 +144,14 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="#" onclick="doLike(<%=post.getId()%>,<%=loggedInUser.getId()%>)" class="btn btn-outline-primary btn-sm"><i
-                                class="far fa-thumbs-up"></i><span> 10</span></a>
+                        <%
+                            LikeDao likeDao = new LikeDao(ConnectionProvider.getConnection());
+                        %>
+                        <a href="#!" onclick="doLike(<%=post.getId()%>, this)"
+                           class="btn btn-outline-primary btn-sm">
+                            <i class="far fa-thumbs-up"></i>
+                            <span class="like-counter"> <%=likeDao.countLikeByPost(post.getId())%></span>
+                        </a>
                         <a href="#" class="btn btn-outline-primary btn-sm"><i
                                 class="fa fa-commenting"></i><span> 20</span></a>
                     </div>
@@ -163,7 +170,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
-                <img src="profile-picture/<%= loggedInUser.getProfilePicture() %>" alt="" class="img-fluid img-thumbnail"
+                <img src="profile-picture/<%= loggedInUser.getProfilePicture() %>" alt=""
+                     class="img-fluid img-thumbnail"
                      style="border-radius: 50%; max-width: 150px">
                 <h1 class="modal-title fs-5 mt-3"><%= loggedInUser.getName() %>
                 </h1>
@@ -211,7 +219,8 @@
                             <tr>
                                 <th scope="row">Name</th>
                                 <td>
-                                    <input type="text" name="name" value="<%= loggedInUser.getName() %>" class="form-control">
+                                    <input type="text" name="name" value="<%= loggedInUser.getName() %>"
+                                           class="form-control">
                                 </td>
                             </tr>
                             <tr>

@@ -2,6 +2,7 @@
 <%@ page import="com.tech.blog.helper.ConnectionProvider" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.tech.blog.entities.Post" %>
+<%@ page import="com.tech.blog.dao.LikeDao" %>
 
 <div class="row">
     <%
@@ -31,7 +32,13 @@
                 </p>
             </div>
             <div class="card-footer text-center">
-                <a href="#" class="btn btn-outline-primary btn-sm"><i class="far fa-thumbs-up"></i><span> 10</span></a>
+                <%
+                    LikeDao likeDao = new LikeDao(ConnectionProvider.getConnection());
+                %>
+                <a href="#!" onclick="doLike(<%=post.getId()%>, this)" class="btn btn-outline-primary btn-sm">
+                    <i class="far fa-thumbs-up"></i>
+                    <span class="like-counter"> <%=likeDao.countLikeByPost(post.getId())%></span>
+                </a>
                 <a href="show_blog_page.jsp?post_id=<%= post.getId()%>" class="btn btn-outline-primary btn-sm">Read
                     More...</a>
                 <a href="#" class="btn btn-outline-primary btn-sm"><i class="fa fa-commenting"></i><span> 20</span></a>
