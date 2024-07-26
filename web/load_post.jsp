@@ -13,7 +13,12 @@
             postList = postDao.getAllPosts();
         else
             postList = postDao.getPostByCatId(categoryId);
-        for (Post post : postList) {
+
+        if (postList.isEmpty()) {
+            out.println("<h3 class='text-center'>No post found in this category!</h3>");
+            return;
+        }
+            for (Post post : postList) {
     %>
 
     <div class="col-md-6 mt-2">
