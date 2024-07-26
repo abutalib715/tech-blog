@@ -1,12 +1,19 @@
-<%@ page import="com.tech.blog.entities.User" %>
-<%@ page import="com.tech.blog.entities.Message" %>
 <%@ page import="com.tech.blog.dao.PostDao" %>
 <%@ page import="com.tech.blog.helper.ConnectionProvider" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Calendar" %>
+<%@ page import="com.tech.blog.entities.User" %>
+<%@ page import="com.tech.blog.entities.Message" %>
+<%@ page import="com.tech.blog.entities.Post" %>
 <%@ page import="com.tech.blog.entities.Category" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.ArrayList" %>
 <%@page errorPage="error_page.jsp" %>
+
+<%--
+  Created by IntelliJ IDEA.
+  User: HP
+  Date: 7/26/2024
+  Time: 6:48 PM
+  To change this template use File | Settings | File Templates.
+--%>
 
 <%
     User user = (User) session.getAttribute("currentUser");
@@ -14,10 +21,20 @@
         response.sendRedirect("login.jsp");
     }
 %>
+
+
+<%
+    int postId = Integer.parseInt(request.getParameter("post_id"));
+    PostDao postDao = new PostDao(ConnectionProvider.getConnection());
+
+    Post post = postDao.getPostById(postId);
+
+%>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Profile Page</title>
+    <title><%=post.getTitle()%> || Tech Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -72,7 +89,6 @@
     </div>
 </nav>
 
-
 <%
     Message message = (Message) session.getAttribute("msg");
     if (message != null) {
@@ -85,35 +101,33 @@
     }
 %>
 
-
 <%
-    PostDao postDao = new PostDao(ConnectionProvider.getConnection());
     ArrayList<Category> categoryList = postDao.getAllCategories();
 %>
-<%--MAIN PAGE--%>
 
+<%--MAIN CONTENT HERE--%>
 <main>
     <div class="container">
-        <div class="row mt-5">
-            <div class="col-md-4">
-                <div class="list-group">
-                    <a href="#" onclick="getPosts(0, this)" class="c-link list-group-item list-group-item-action active"
-                       aria-current="true">
-                        All Posts
-                    </a>
-                    <% for (Category category : categoryList) { %>
-                    <a href="#" onclick="getPosts(<%= category.getId() %>, this)"
-                       class="c-link list-group-item list-group-item-action"><%= category.getName() %>
-                    </a>
-                    <% } %>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="container text-center" id="loader">
-                    <span class="fa fa-refresh fa-3x fa-spin"></span>
-                    <h3 class="mt-3">Loading.....</h3>
-                </div>
-                <div class="container" id="post-container">
+        <div class="row my-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h4><%=post.getTitle()%>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <img class="card-img-top mb-2" src="blog-images/<%= post.getImage() %>" alt="">
+                        <p><%=post.getContent()%>
+                        </p>
+                        <br><br>
+                        <pre><%=post.getCode()%></pre>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-outline-primary btn-sm"><i
+                                class="far fa-thumbs-up"></i><span> 10</span></a>
+                        <a href="#" class="btn btn-outline-primary btn-sm"><i
+                                class="fa fa-commenting"></i><span> 20</span></a>
+                    </div>
                 </div>
             </div>
         </div>

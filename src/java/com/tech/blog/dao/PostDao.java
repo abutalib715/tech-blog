@@ -93,6 +93,33 @@ public class PostDao {
         return allPosts;
     }
 
+    public Post getPostById(int postId) {
+        Post post = null;
+
+        try {
+            String sql = "select * from posts where id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, postId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                String content = resultSet.getString("content");
+                String code = resultSet.getString("code");
+                String image = resultSet.getString("image");
+                Timestamp date = resultSet.getTimestamp("created_on");
+                int catId = resultSet.getInt("category_id");
+                int userId = resultSet.getInt("user_id");
+
+                post = new Post(postId, catId, title, content, code, image, date, userId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return post;
+    }
+
     // INSERT POST
     public boolean savePost(Post post) {
         boolean isInserted = false;

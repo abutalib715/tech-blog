@@ -18,7 +18,7 @@
             out.println("<h3 class='text-center'>No post found in this category!</h3>");
             return;
         }
-            for (Post post : postList) {
+        for (Post post : postList) {
     %>
 
     <div class="col-md-6 mt-2">
@@ -29,7 +29,12 @@
                 </b>
                 <p><%= post.getContent() %>
                 </p>
-                <pre><%= post.getCode() %></pre>
+            </div>
+            <div class="card-footer text-center">
+                <a href="#" class="btn btn-outline-primary btn-sm"><i class="far fa-thumbs-up"></i><span> 10</span></a>
+                <a href="show_blog_page.jsp?post_id=<%= post.getId()%>" class="btn btn-outline-primary btn-sm">Read
+                    More...</a>
+                <a href="#" class="btn btn-outline-primary btn-sm"><i class="fa fa-commenting"></i><span> 20</span></a>
             </div>
         </div>
     </div>
