@@ -8,10 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class UserDao {
-    private Connection con;
+    private Connection connection;
 
-    public UserDao(Connection con) {
-        this.con = con;
+    public UserDao(Connection connection) {
+        this.connection = connection;
     }
 
     // INSERT USER
@@ -19,7 +19,7 @@ public class UserDao {
         boolean isInserted = false;
         try {
             String query = "insert into user(name, email, password, gender, about) values(?,?,?,?,?)";
-            PreparedStatement pstmt = con.prepareStatement(query);
+            PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, user.getName());
             pstmt.setString(2, user.getEmail());
             pstmt.setString(3, user.getPassword());
@@ -39,7 +39,7 @@ public class UserDao {
         User user = null;
         try {
             String query = "select * from user where email =? and password = ?";
-            PreparedStatement preparedStatement = con.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -67,7 +67,7 @@ public class UserDao {
         boolean isUpdated = false;
         try {
             String query = "update user set name=?, email=?, password=?, about=?,profile_picture=? where id=?";
-            PreparedStatement pstmt = con.prepareStatement(query);
+            PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setString(1, user.getName());
             pstmt.setString(2, user.getEmail());
             pstmt.setString(3, user.getPassword());
@@ -82,5 +82,32 @@ public class UserDao {
         }
 
         return isUpdated;
+    }
+
+    public User getUserById(int userId) {
+        User user = null;
+
+        try {
+            String sql = "select * from user where id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                user = new User();
+                user.setId(userId);
+                user.setName(resultSet.getString("name"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+                user.setAbout(resultSet.getString("about"));
+                user.setGender(resultSet.getString("gender"));
+                user.setReg_date(resultSet.getTimestamp("reg_date"));
+                user.setProfilePicture(resultSet.getString("profile_picture"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 }

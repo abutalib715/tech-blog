@@ -5,6 +5,7 @@
 <%@ page import="com.tech.blog.entities.Post" %>
 <%@ page import="com.tech.blog.entities.Category" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.tech.blog.dao.UserDao" %>
 <%@page errorPage="error_page.jsp" %>
 
 <%--
@@ -16,8 +17,8 @@
 --%>
 
 <%
-    User user = (User) session.getAttribute("currentUser");
-    if (user == null) {
+    User loggedInUser = (User) session.getAttribute("currentUser");
+    if (loggedInUser == null) {
         response.sendRedirect("login.jsp");
     }
 %>
@@ -78,7 +79,7 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-bs-toggle="modal"
                        data-bs-target="#profileModal">
-                        <span class="fa fa-user-circle"></span> <%= user.getName() %>
+                        <span class="fa fa-user-circle"></span> <%= loggedInUser.getName() %>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -112,18 +113,37 @@
             <div class="col-md-8 offset-md-2">
                 <div class="card">
                     <div class="card-header">
-                        <h4><%=post.getTitle()%>
+                        <h4 class="post-title"><%=post.getTitle()%>
                         </h4>
                     </div>
                     <div class="card-body">
                         <img class="card-img-top mb-2" src="blog-images/<%= post.getImage() %>" alt="">
-                        <p><%=post.getContent()%>
+                        <div class="row mt-2">
+                            <div class="col-md-8">
+
+                                <%
+                                    UserDao userDao = new UserDao(ConnectionProvider.getConnection());
+
+                                    User authorInfo = userDao.getUserById(post.getUserId());
+
+                                %>
+                                <p><i class="fa fa-user"></i> Published By: <%=authorInfo.getName()%>
+                                </p>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <i class="fa fa-calendar-days"></i> <%=post.getCreatedOn().toLocaleString()%>
+                            </div>
+                        </div>
+                        <hr>
+                        <p class="post-content"><%=post.getContent()%>
                         </p>
                         <br><br>
-                        <pre><%=post.getCode()%></pre>
+                        <div class="post-code">
+                            <pre><%=post.getCode()%></pre>
+                        </div>
                     </div>
                     <div class="card-footer">
-                        <a href="#" class="btn btn-outline-primary btn-sm"><i
+                        <a href="#" onclick="doLike(<%=post.getId()%>,<%=loggedInUser.getId()%>)" class="btn btn-outline-primary btn-sm"><i
                                 class="far fa-thumbs-up"></i><span> 10</span></a>
                         <a href="#" class="btn btn-outline-primary btn-sm"><i
                                 class="fa fa-commenting"></i><span> 20</span></a>
@@ -143,36 +163,36 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
-                <img src="profile-picture/<%= user.getProfilePicture() %>" alt="" class="img-fluid img-thumbnail"
+                <img src="profile-picture/<%= loggedInUser.getProfilePicture() %>" alt="" class="img-fluid img-thumbnail"
                      style="border-radius: 50%; max-width: 150px">
-                <h1 class="modal-title fs-5 mt-3"><%= user.getName() %>
+                <h1 class="modal-title fs-5 mt-3"><%= loggedInUser.getName() %>
                 </h1>
                 <div id="profile-details">
                     <table class="table table-bordered">
                         <tbody>
                         <tr>
                             <th scope="row">ID</th>
-                            <td><%= user.getId() %>
+                            <td><%= loggedInUser.getId() %>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">Email</th>
-                            <td><%= user.getEmail() %>
+                            <td><%= loggedInUser.getEmail() %>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">Gender</th>
-                            <td><%= user.getGender() %>
+                            <td><%= loggedInUser.getGender() %>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">About</th>
-                            <td><%= user.getAbout() %>
+                            <td><%= loggedInUser.getAbout() %>
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">Reg Date</th>
-                            <td><%= user.getReg_date().toString() %>
+                            <td><%= loggedInUser.getReg_date().toString() %>
                             </td>
                         </tr>
                         </tbody>
@@ -185,40 +205,40 @@
                             <tbody>
                             <tr>
                                 <th scope="row">ID</th>
-                                <td><%= user.getId() %>
+                                <td><%= loggedInUser.getId() %>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Name</th>
                                 <td>
-                                    <input type="text" name="name" value="<%= user.getName() %>" class="form-control">
+                                    <input type="text" name="name" value="<%= loggedInUser.getName() %>" class="form-control">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Email</th>
                                 <td>
-                                    <input type="email" name="email" value="<%= user.getEmail() %>"
+                                    <input type="email" name="email" value="<%= loggedInUser.getEmail() %>"
                                            class="form-control">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Password</th>
                                 <td>
-                                    <input type="password" name="password" value="<%= user.getPassword() %>"
+                                    <input type="password" name="password" value="<%= loggedInUser.getPassword() %>"
                                            class="form-control">
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Gender</th>
                                 <td>
-                                    <%= user.getGender().toUpperCase() %>
+                                    <%= loggedInUser.getGender().toUpperCase() %>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">About</th>
                                 <td>
                                     <textarea name="about" rows="3"
-                                              class="form-control"><%= user.getAbout() %></textarea>
+                                              class="form-control"><%= loggedInUser.getAbout() %></textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -376,5 +396,6 @@
         getPosts(0, allPostRef);
     })
 </script>
+<script src="js/script.js"></script>
 </body>
 </html>
