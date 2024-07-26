@@ -97,13 +97,13 @@
         <div class="row mt-5">
             <div class="col-md-4">
                 <div class="list-group">
-                    <a href="#" onclick="getPosts(0)" class="list-group-item list-group-item-action active"
+                    <a href="#" onclick="getPosts(0, this)" class="c-link list-group-item list-group-item-action active"
                        aria-current="true">
                         All Posts
                     </a>
                     <% for (Category category : categoryList) { %>
-                    <a href="#" onclick="getPosts(<%= category.getId() %>)"
-                       class="list-group-item list-group-item-action"><%= category.getName() %>
+                    <a href="#" onclick="getPosts(<%= category.getId() %>, this)"
+                       class="c-link list-group-item list-group-item-action"><%= category.getName() %>
                     </a>
                     <% } %>
                 </div>
@@ -343,19 +343,23 @@
 
 <%--LOAD POSTS--%>
 <script>
-    function getPosts(catId) {
+    function getPosts(catId, refElement) {
+        $(".c-link").removeClass('active')
+
         $.ajax({
             url: "load_post.jsp",
             data: {categoryId: catId},
             success: function (data, textStatus, jqXRH) {
                 $("#loader").hide();
                 $("#post-container").html(data);
+                $(refElement).addClass('active')
             }
         })
     }
 
     $(document).ready(function (e) {
-        getPosts(0);
+        let allPostRef = $('.c-link')[0]
+        getPosts(0, allPostRef);
     })
 </script>
 </body>
