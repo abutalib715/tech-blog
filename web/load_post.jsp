@@ -6,7 +6,13 @@
 <div class="row">
     <%
         PostDao postDao = new PostDao(ConnectionProvider.getConnection());
-        List<Post> postList = postDao.getAllPosts();
+
+        List<Post> postList;
+        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+        if (categoryId == 0)
+            postList = postDao.getAllPosts();
+        else
+            postList = postDao.getPostByCatId(categoryId);
         for (Post post : postList) {
     %>
 

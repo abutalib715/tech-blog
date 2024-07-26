@@ -97,11 +97,13 @@
         <div class="row mt-5">
             <div class="col-md-4">
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                    <a href="#" onclick="getPosts(0)" class="list-group-item list-group-item-action active"
+                       aria-current="true">
                         All Posts
                     </a>
                     <% for (Category category : categoryList) { %>
-                    <a href="#" class="list-group-item list-group-item-action"><%= category.getName() %>
+                    <a href="#" onclick="getPosts(<%= category.getId() %>)"
+                       class="list-group-item list-group-item-action"><%= category.getName() %>
                     </a>
                     <% } %>
                 </div>
@@ -341,14 +343,19 @@
 
 <%--LOAD POSTS--%>
 <script>
-    $(document).ready(function (e) {
+    function getPosts(catId) {
         $.ajax({
             url: "load_post.jsp",
+            data: {categoryId: catId},
             success: function (data, textStatus, jqXRH) {
                 $("#loader").hide();
                 $("#post-container").html(data);
             }
         })
+    }
+
+    $(document).ready(function (e) {
+        getPosts(0);
     })
 </script>
 </body>
